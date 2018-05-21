@@ -1,45 +1,34 @@
-// This is a test of the abuse of setImmediate,
-// and understanding if there is a race condition
-// so we can have an l i t e r a t e   p r o m i s e
-
 const LiteratePromise = require(`./literatepromise`)
-const lp = new LiteratePromise()
+const test = require('ava')
 
-const first = () => {
-  console.log('first enqueue')
+test.cb('we call the full queue once', t => {
+  const lp = new LiteratePromise()
+  lp.on('processed', queue => {
+    t.deepEqual(queue, ['this', 'is', 'cool'])
+    t.end()
+  })
+
   lp
     .enqueue('this')
     .enqueue('is')
     .enqueue('cool')
-}
+})
 
-const second = () => {
-  console.log('second enqueue')
+test.cb('the queue clears on a second call', t => {
+  const lp = new LiteratePromise()
+  lp
+    .enqueue('this')
+    .enqueue('is')
+    .enqueue('cool')
+
+  // lp.process() here please
+
   lp
     .enqueue('like')
     .enqueue('the')
     .enqueue('coolest')
-    .then(console.log)
-}
-
-
-const third = () => {
-  console.log('third enqueue')
-  lp
-    .enqueue('is')
-    .enqueue('it')
-    .enqueue('not?')
-    .then(null, console.error)
-}
-
-const fourth = async () => {
-  console.log('await enqueue')
-  const wat = await lp.enqueue('indeed').enqueue('it').enqueue('is')
-  console.dir(wat)
-}
-
-first()
-second()
-third()
-fourth()
-
+    .then(resolved => {
+      t.is(resolved, `resolved: like,the,coolest`)
+      t.end()
+    })
+})

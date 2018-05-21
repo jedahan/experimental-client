@@ -4,10 +4,11 @@
   "description": "",
   "main": "literatepromise.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "ava test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ava": "^0.25.0"
   }
 }

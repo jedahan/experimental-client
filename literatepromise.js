@@ -1,5 +1,8 @@
-module.exports = class LiteratePromise {
+const EventEmitter = require(`events`)
+
+module.exports = class LiteratePromise extends EventEmitter {
   constructor () {
+    super()
     this._immediate = null
     this._queue = []
   }
@@ -14,7 +17,7 @@ module.exports = class LiteratePromise {
       const queue = this._queue
       this._queue = []
       if (queue.includes('not?')) reject('rejecting: found not?')
-      //console.log(`processing ${queue}`)
+      this.emit('processed', queue)
       resolve(`resolved: ${queue}`)
     })
   }
