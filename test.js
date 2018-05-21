@@ -13,6 +13,31 @@ test.afterEach(t => {
   t.context.server.close()
 })
 
+test.cb(`we get calls when broken up`, t => {
+  const room = t.context.room
+  const asserts = new Set([
+    `party`,
+    `car`,
+    `animal`,
+    `blue`,
+    `me`
+  ])
+
+  room.on(`animal $what`, ({what}) => {
+    t.true(asserts.delete(what))
+    if (asserts.size === 0) t.end()
+  })
+
+  room
+     .assert(`animal party`)
+     .assert(`animal car`)
+     .assert(`animal animal`)
+
+   room
+     .assert(`animal blue`)
+     .assert(`animal me`)
+})
+
 test.cb(`once only gets called for existing assertions`, t => {
   const room = t.context.room
   const asserts = new Set([ `first`, `second` ])
