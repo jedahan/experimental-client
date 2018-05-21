@@ -2,22 +2,12 @@
   "name": "experimental-client",
   "version": "1.0.0",
   "description": "",
-  "main": "room.js",
+  "main": "literatepromise.js",
   "scripts": {
-    "test": "ava --verbose test.js",
-    "start": "node server.js"
+    "test": "node test.js",
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@koa/cors": "^2.2.1",
-    "@living-room/database-js": "^0.4.3",
-    "ava": "^0.25.0",
-    "get-port": "^3.2.0",
-    "koa": "^2.5.1",
-    "koa-body": "^2.5.0",
-    "koa-socket-2": "^1.0.17",
-    "node-fetch": "^2.1.2",
-    "socket.io-client": "^2.1.1"
   }
 }
