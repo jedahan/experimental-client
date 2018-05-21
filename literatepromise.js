@@ -1,28 +1,27 @@
 module.exports = class LiteratePromise {
   constructor () {
-    this._immediate = null
     this._queue = []
   }
 
   then (onResolve, onReject) {
-    clearImmediate(this._immediate)
-    return this.process().then(onResolve, onReject)
+
+    return this.process(this._queue)
+      .then(onResolve, onReject)
   }
 
-  process () {
+  process (queue) {
     return new Promise((resolve, reject) => {
-      const queue = this._queue
       this._queue = []
+      if (!Array.isArray(queue)) resolve('resolved: empty')
       if (queue.includes('not?')) reject('rejecting: found not?')
-      //console.log(`processing ${queue}`)
+      console.log(`processing ${queue}`)
       resolve(`resolved: ${queue}`)
     })
   }
 
   enqueue (data) {
-    clearImmediate(this._immediate)
     this._queue.push(data)
-    this._immediate = setImmediate(this.process.bind(this))
+    process.nextTick(this.process.bind(this), this._queue)
     return this
   }
 }
