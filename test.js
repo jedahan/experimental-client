@@ -16,12 +16,17 @@ test.cb('we call the full queue once', t => {
 
 test.cb('the queue clears on a second call', t => {
   const lp = new LiteratePromise()
+  const processed = queue => {
+    t.deepEqual(queue, ['this', 'is', 'cool'])
+    lp.off('processed', processed)
+  }
+
+  lp.on('processed', processed)
+
   lp
     .enqueue('this')
     .enqueue('is')
     .enqueue('cool')
-
-  // lp.process() here please
 
   setImmediate(() => {
     lp
