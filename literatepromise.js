@@ -3,7 +3,6 @@ const EventEmitter = require(`events`)
 module.exports = class LiteratePromise extends EventEmitter {
   constructor () {
     super()
-    this._immediate = null
     this._queue = []
   }
 

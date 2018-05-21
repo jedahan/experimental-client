@@ -23,12 +23,14 @@ test.cb('the queue clears on a second call', t => {
 
   // lp.process() here please
 
-  lp
-    .enqueue('like')
-    .enqueue('the')
-    .enqueue('coolest')
-    .then(resolved => {
-      t.is(resolved, `resolved: like,the,coolest`)
-      t.end()
-    })
+  setTimeout(() => {
+    lp
+      .enqueue('like')
+      .enqueue('the')
+      .enqueue('coolest')
+      .then(resolved => {
+        t.is(resolved, `resolved: like,the,coolest`)
+        t.end()
+      })
+  }, 1500)
 })
