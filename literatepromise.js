@@ -1,27 +1,28 @@
-module.exports = class LiteratePromise {
+const FluentPromises = require(`fluent-promises`)
+module.exports = class LiteratePromise extends FluentPromises {
   constructor () {
+    super()
     this._queue = []
+    this._immedaite = null
   }
 
   then (onResolve, onReject) {
-
-    return this.process(this._queue)
-      .then(onResolve, onReject)
+    return this.process(this._queue).then(onResolve, onReject)
   }
 
-  process (queue) {
-    return new Promise((resolve, reject) => {
-      this._queue = []
-      if (!Array.isArray(queue)) resolve('resolved: empty')
-      if (queue.includes('not?')) reject('rejecting: found not?')
-      console.log(`processing ${queue}`)
-      resolve(`resolved: ${queue}`)
+  process () {
+    return this.makeFluent(() => {
+      console.dir(this._queue)
     })
   }
 
   enqueue (data) {
-    this._queue.push(data)
-    process.nextTick(this.process.bind(this), this._queue)
-    return this
+    return this.makeFluent(() => {
+      setImmediate(() => {
+        return new Promise((resolve, reject) => {
+          this._queue.push(data)
+        })
+      })
+    })
   }
 }

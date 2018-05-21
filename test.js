@@ -5,13 +5,25 @@
 const LiteratePromise = require(`./literatepromise`)
 const lp = new LiteratePromise()
 
-const first = () => {
+const first = async () => {
   console.log('first enqueue')
-  lp
+  const wat = await lp
     .enqueue('this')
     .enqueue('is')
     .enqueue('cool')
+  console.dir(wat) // this is broken
 }
+
+// this works
+const onepointfive = () => {
+  console.log(`onepointfive enqueue`)
+  lp
+    .enqueue('one')
+    .enqueue('point')
+    .enqueue('five')
+    .then()
+}
+
 
 const second = () => {
   console.log('second enqueue')
@@ -38,8 +50,9 @@ const fourth = async () => {
   console.dir(wat)
 }
 
+// How come onepointfive() resolves (with the then), but first() does not?
 first()
+onepointfive()
 second()
 third()
 fourth()
-

@@ -4,10 +4,12 @@
   "description": "",
   "main": "literatepromise.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "node test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chain-spy": "^1.0.0",
+    "fluent-promises": "0.0.8"
   }
 }
