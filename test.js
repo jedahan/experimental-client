@@ -3,7 +3,9 @@ const test = require('ava')
 
 test.cb('we call the full queue once', t => {
   const lp = new LiteratePromise()
-  lp.on('processed', queue => {
+  t.plan(1)
+
+  lp.on('foundthis', queue => {
     t.deepEqual(queue, ['this', 'is', 'cool'])
     t.end()
   })
@@ -16,19 +18,18 @@ test.cb('we call the full queue once', t => {
 
 test.cb('the queue clears on a second call', t => {
   const lp = new LiteratePromise()
-  const processed = queue => {
-    t.deepEqual(queue, ['this', 'is', 'cool'])
-    lp.off('processed', processed)
-  }
+  t.plan(2)
 
-  lp.on('processed', processed)
+  lp.on('foundthis', queue => {
+    t.deepEqual(queue, ['this', 'is', 'cool'])
+  })
 
   lp
     .enqueue('this')
     .enqueue('is')
     .enqueue('cool')
 
-  setImmediate(() => {
+  setTimeout(() => {
     lp
       .enqueue('like')
       .enqueue('the')
